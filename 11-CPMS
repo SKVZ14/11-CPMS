@@ -81,60 +81,78 @@
 
 <script>
   // ────────────────────────────────────────────────────────────
-  // CONFIG — built from your Mon–Fri timetable. Edit SCHEDULE below
+  // CONFIG — built from your Mon–Sat timetable. Edit SCHEDULE below
   // if your times or subjects ever change. All times are 24-hour
   // "HH:MM", based on the scanning phone's own clock.
+  //
+  // "Morning Deposit" and "Log-out Claim" are special-cased on the
+  // BACKEND (ClassAttendance-AppsScript.gs): Morning Deposit always
+  // logs as type "Deposit" and Log-out Claim always logs as type
+  // "Claim", regardless of scan order — unlike regular subjects,
+  // where the 1st scan = Deposit and 2nd scan = Claim automatically.
   // ────────────────────────────────────────────────────────────
   const CONFIG = {
-    SCRIPT_URL: "https://script.google.com/macros/s/AKfycbwEkHI0M45aYfSptXfjRswLKh5LoBLE1yvC3AZn5lPTy8qhogErbUNjk1mlJiYFQ0EL/exec",
+    SCRIPT_URL: "https://script.google.com/macros/s/AKfycbyr8uI9Kqj1eQzsYV3yEhNKVqchprhB6TkIU-t34SOefH6i7B5SYE_F5OWTCPkuoGG0/exec",
     SCHEDULE: {
       monday: [
-        { label: "Morning Deposit",         start: "6:00", end: "7:40"   },
+        { label: "Morning Deposit",         start: "06:00", end: "07:40" },
         { label: "General Math",            start: "07:40", end: "09:40" },
-        { label: "Biology 1",               start: "10:00", end: "12:00" },
+        { label: "Snacks",                  start: "09:40", end: "10:00" },
+        { label: "Biology 1",               start: "10:00", end: "11:59" },
+        { label: "Lunch",                   start: "12:00", end: "13:00" },
         { label: "Life and Career Skills",  start: "13:00", end: "15:00" },
         { label: "General Science",         start: "15:00", end: "17:00" },
         { label: "HGP",                     start: "17:00", end: "18:00" },
         { label: "Log-out Claim",           start: "18:00", end: "19:00" }
       ],
       tuesday: [
-        { label: "Morning Deposit",         start: "6:00", end: "7:40"   },
-        { label: "General Math",            start: "07:40", end: "09:40" },
+        { label: "Morning Deposit",         start: "06:00", end: "07:40" },
+        { label: "General Math",            start: "07:40", end: "09:39" },
+        { label: "Snacks",                  start: "09:40", end: "10:00" },
         { label: "Effective Com",           start: "10:00", end: "11:00" },
-        { label: "Mabisang Kom",            start: "11:00", end: "12:00" },
+        { label: "Mabisang Kom",            start: "11:00", end: "11:59" },
+        { label: "Lunch",                   start: "12:00", end: "13:00" },
         { label: "Life and Career Skills",  start: "13:00", end: "15:00" },
         { label: "Biology 1",               start: "15:00", end: "17:00" },
         { label: "Log-out Claim",           start: "18:00", end: "19:00" }
       ],
       wednesday: [
-        { label: "Morning Deposit",         start: "6:00", end: "7:40"   },
-        { label: "General Math",            start: "07:40", end: "09:40" },
+        { label: "Morning Deposit",         start: "06:00", end: "07:40" },
+        { label: "General Math",            start: "07:40", end: "09:39" },
+        { label: "Snacks",                  start: "09:40", end: "10:00" },
         { label: "Effective Com",           start: "10:00", end: "11:00" },
-        { label: "Mabisang Kom",            start: "11:00", end: "12:00" },
+        { label: "Mabisang Kom",            start: "11:00", end: "11:59" },
+        { label: "Lunch",                   start: "12:00", end: "13:00" },
         { label: "Pagaaral ng Kasaysayan",  start: "13:00", end: "15:00" },
         { label: "General Science",         start: "15:00", end: "17:00" },
         { label: "Log-out Claim",           start: "18:00", end: "19:00" }
       ],
       thursday: [
-        { label: "Morning Deposit",         start: "6:00", end: "7:40"   },
-        { label: "Pagaaral ng Kasaysayan",  start: "07:40", end: "09:40" },
+        { label: "Morning Deposit",         start: "06:00", end: "07:40" },
+        { label: "Pagaaral ng Kasaysayan",  start: "07:40", end: "09:39" },
+        { label: "Snacks",                  start: "09:40", end: "10:00" },
         { label: "Effective Com",           start: "10:00", end: "11:00" },
-        { label: "Mabisang Kom",            start: "11:00", end: "12:00" },
+        { label: "Mabisang Kom",            start: "11:00", end: "11:59" },
+        { label: "Lunch",                   start: "12:00", end: "13:00" },
         { label: "Life and Career Skills",  start: "13:00", end: "15:00" },
         { label: "Biology 1",               start: "15:00", end: "17:00" },
         { label: "Log-out Claim",           start: "18:00", end: "19:00" }
       ],
       friday: [
-        { label: "Morning Deposit",         start: "6:00", end: "7:40"   },
-        { label: "Pagaaral ng Kasaysayan",  start: "07:40", end: "09:40" },
-        { label: "General Science",         start: "10:00", end: "12:00" },
+        { label: "Morning Deposit",         start: "06:00", end: "07:40" },
+        { label: "Pagaaral ng Kasaysayan",  start: "07:40", end: "09:39" },
+        { label: "Snacks",                  start: "09:40", end: "10:00" },
+        { label: "General Science",         start: "10:00", end: "11:59" },
+        { label: "Lunch",                   start: "12:00", end: "13:00" },
         { label: "Biology 1",               start: "13:00", end: "15:00" },
         { label: "Log-out Claim",           start: "16:00", end: "19:00" }
       ],
       saturday: [
-        { label: "Morning Deposit",         start: "6:00", end: "7:40"   },
-        { label: "Pagaaral ng Kasaysayan",  start: "07:40", end: "09:40" },
-        { label: "General Science",         start: "10:00", end: "12:00" },
+        { label: "Morning Deposit",         start: "06:00", end: "07:40" },
+        { label: "Pagaaral ng Kasaysayan",  start: "07:40", end: "09:39" },
+        { label: "Snacks",                  start: "09:40", end: "10:00" },
+        { label: "General Science",         start: "10:00", end: "11:59" },
+        { label: "Lunch",                   start: "12:00", end: "13:00" },
         { label: "Biology 1",               start: "13:00", end: "15:00" },
         { label: "Log-out Claim",           start: "17:00", end: "19:00" }
       ],
@@ -230,11 +248,12 @@
     }
 
     try {
-      const res = await fetch(CONFIG.SCRIPT_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // avoids CORS preflight against Apps Script
-        body: JSON.stringify({ id, name, subject: period.label })
-      });
+      const url = new URL(CONFIG.SCRIPT_URL);
+      url.searchParams.set('id', id);
+      url.searchParams.set('name', name);
+      url.searchParams.set('subject', period.label);
+
+      const res = await fetch(url.toString()); // plain GET — avoids CORS/POST quirks with Apps Script
       const data = await res.json();
 
       if (data.status === 'success') {
